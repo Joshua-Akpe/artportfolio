@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QBZ</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&family=Unbounded:wght@300;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0e0d0b;
+  --paper:#1a1814;
+  --dust:#2c2a26;
+  --ash:#3d3a34;
+  --fog:#6b6760;
+  --bone:#a89f94;
+  --cream:#c8bfb4;
+  --rust:#7a3a28;
+  --rust-dim:#5a2a1a;
+  --ochre:#6b5a2e;
+  --sage:#3a4a38;
+  --slate:#2a3440;
+  --muted-red:#8a2020;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:auto;}
+
+body{
+  background:var(--ink);
+  color:var(--cream);
+  font-family:'Share Tech Mono',monospace;
+  overflow-x:hidden;
+  cursor:none;
+}
+
+/* ── CURSOR ── */
+.cur{position:fixed;width:8px;height:8px;background:var(--cream);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .08s,background .3s;}
+.cur-x{position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);width:24px;height:24px;}
+.cur-x::before,.cur-x::after{content:'';position:absolute;background:var(--bone);transition:background .3s;}
+.cur-x::before{width:100%;height:1px;top:50%;left:0;}
+.cur-x::after{width:1px;height:100%;left:50%;top:0;}
+
+/* GRAIN */
+body::before{
+  content:'';position:fixed;inset:-50%;
+  width:200%;height:200%;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  opacity:.055;pointer-events:none;z-index:9000;
+  animation:grain 0.4s steps(1) infinite;
+}
+@keyframes grain{
+  0%{transform:translate(0,0)}
+  10%{transform:translate(-3%,-4%)}
+  20%{transform:translate(-6%,3%)}
+  30%{transform:translate(4%,-2%)}
+  40%{transform:translate(-3%,6%)}
+  50%{transform:translate(5%,-1%)}
+  60%{transform:translate(-2%,4%)}
+  70%{transform:translate(3%,-5%)}
+  80%{transform:translate(-5%,2%)}
+  90%{transform:translate(4%,4%)}
+  100%{transform:translate(0,0)}
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  padding:1.4rem 3rem;
+  display:flex;align-items:center;justify-content:space-between;
+  mix-blend-mode:normal;
+}
+nav::after{
+  content:'';position:absolute;bottom:0;left:3rem;right:3rem;
+  height:1px;background:linear-gradient(90deg,transparent,var(--ash),transparent);
+}
+.nav-logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.6rem;letter-spacing:.3em;
+  color:var(--bone);text-decoration:none;
+  position:relative;
+}
+.nav-logo::before{
+  content:'[';color:var(--rust);margin-right:2px;
+}
+.nav-logo::after{
+  content:']';color:var(--rust);margin-left:2px;
+}
+.nav-links{display:flex;gap:3rem;list-style:none;}
+.nav-links a{
+  font-size:.62rem;letter-spacing:.25em;text-transform:uppercase;
+  color:var(--fog);text-decoration:none;transition:color .3s;
+  position:relative;
+}
+.nav-links a::before{content:'_';color:var(--rust);opacity:0;margin-right:3px;transition:opacity .2s;}
+.nav-links a:hover{color:var(--bone);}
+.nav-links a:hover::before{opacity:1;}
+
+/* ══════════════════════
+   HERO — pure chaos
+══════════════════════ */
+#hero{
+  min-height:100vh;
+  display:grid;
+  grid-template-rows:1fr auto;
+  padding:0;
+  position:relative;overflow:hidden;
+  background:var(--ink);
+}
+
+/* Vertical ruled lines, slightly off */
+#hero::before{
+  content:'';position:absolute;inset:0;
+  background:
+    repeating-linear-gradient(
+      93deg,
+      transparent 0px,
+      transparent 140px,
+      rgba(60,58,52,.25) 140px,
+      rgba(60,58,52,.25) 141px
+    );
+  transform:skewX(-2deg);
+  pointer-events:none;
+}
+
+.hero-main{
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  padding:8rem 4rem 3rem;
+  position:relative;z-index:2;
+}
+
+/* Giant title — broken across lines, mixed weights */
+.hero-t{
+  line-height:.82;
+  position:relative;
+}
+.hero-t-q{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(10rem,25vw,22rem);
+  color:transparent;
+  -webkit-text-stroke:1px var(--ash);
+  display:block;
+  transform:translateX(-6px) rotate(-.8deg);
+  letter-spacing:-.02em;
+}
+.hero-t-b{
+  font-family:'Unbounded',sans-serif;
+  font-size:clamp(5rem,13vw,12rem);
+  font-weight:900;
+  color:var(--dust);
+  display:block;
+  transform:translateX(3rem) rotate(.4deg);
+  letter-spacing:-.04em;
+  line-height:.9;
+  position:relative;
+}
+.hero-t-b::after{
+  content:'B';
+  position:absolute;top:4px;left:4px;
+  color:var(--rust-dim);
+  z-index:-1;
+}
+.hero-t-z{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(12rem,28vw,26rem);
+  color:var(--cream);
+  display:block;
+  transform:translateX(-2rem) rotate(-1.2deg);
+  letter-spacing:-.03em;
+  line-height:.85;
+  text-shadow:
+    -2px 2px 0 var(--rust-dim),
+    -4px 4px 0 rgba(90,42,26,.3);
+}
+
+/* Floating annotation labels like a torn notebook */
+.anno{
+  position:absolute;
+  font-size:.58rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--fog);
+  border:1px solid var(--ash);
+  padding:.3rem .6rem;
+  background:var(--paper);
+  white-space:nowrap;
+}
+.anno-1{top:22%;right:8%;transform:rotate(2.5deg);}
+.anno-2{top:38%;right:14%;transform:rotate(-1.8deg);}
+.anno-3{bottom:28%;right:6%;transform:rotate(4deg);}
+.anno-arrow{
+  position:absolute;
+  color:var(--ash);font-size:.7rem;
+  pointer-events:none;
+}
+.anno-arrow-1{top:24%;right:24%;transform:rotate(-20deg);}
+.anno-arrow-2{top:40%;right:28%;transform:rotate(10deg);}
+
+/* Horizontal dashes scattered */
+.hero-dash{
+  position:absolute;
+  height:1px;background:var(--ash);
+  transform-origin:left;
+}
+.hd1{width:80px;top:45%;left:55%;transform:rotate(-8deg);}
+.hd2{width:140px;top:60%;left:35%;transform:rotate(3deg);}
+.hd3{width:50px;top:30%;left:70%;transform:rotate(-15deg);}
+
+.hero-bottom{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  border-top:1px solid var(--ash);
+  position:relative;z-index:2;
+}
+.hero-cell{
+  padding:1.2rem 2rem;
+  border-right:1px solid var(--ash);
+  display:flex;align-items:center;gap:1rem;
+  position:relative;overflow:hidden;
+}
+.hero-cell:last-child{border-right:none;}
+.hero-cell-label{font-size:.55rem;letter-spacing:.25em;color:var(--fog);text-transform:uppercase;}
+.hero-cell-val{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--bone);letter-spacing:.1em;}
+.hero-cell::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;
+  width:2px;background:var(--rust);
+  transform:scaleY(0);transform-origin:bottom;
+  transition:transform .4s ease;
+}
+.hero-cell:hover::before{transform:scaleY(1);}
+
+/* ══════════════════════
+   DIAGONAL TICKER
+══════════════════════ */
+.diag-ticker-wrap{
+  position:relative;
+  z-index:50;
+  overflow:hidden;
+  height:52px;
+  margin:0;
+  /* the skew that makes it diagonal */
+  transform:skewY(-2.8deg);
+  transform-origin:left center;
+  border-top:1px solid var(--ochre);
+  border-bottom:1px solid var(--ochre);
+  background:var(--rust);
+}
+.diag-ticker-wrap.reverse{
+  transform:skewY(2.8deg);
+  transform-origin:right center;
+  background:var(--dust);
+  border-color:var(--ash);
+  margin-top:-1px;
+}
+.diag-ticker{
+  display:flex;
+  white-space:nowrap;
+  height:100%;
+  align-items:center;
+  animation:dtick 22s linear infinite;
+  will-change:transform;
+}
+.diag-ticker-wrap.reverse .diag-ticker{
+  animation-direction:reverse;
+  animation-duration:28s;
+}
+.diag-ticker-item{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1rem;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  color:var(--cream);
+  padding:0 1.8rem;
+  opacity:.85;
+  /* undo the skew on the text */
+  display:inline-flex;
+  align-items:center;
+}
+.diag-ticker-wrap.reverse .diag-ticker-item{
+  color:var(--bone);
+  font-size:.82rem;
+  letter-spacing:.22em;
+  opacity:.6;
+}
+.diag-ticker-sep{
+  display:inline-block;
+  width:7px;height:7px;
+  background:var(--ochre);
+  transform:rotate(45deg);
+  margin:0 .4rem;
+  flex-shrink:0;
+}
+.diag-ticker-wrap.reverse .diag-ticker-sep{
+  background:var(--ash);
+  width:4px;height:4px;
+}
+@keyframes dtick{
+  from{transform:translateX(0)}
+  to{transform:translateX(-50%)}
+}
+
+/* ══════════════════════
+   GALLERY
+══════════════════════ */
+#gallery{
+  background:var(--paper);
+  padding:6rem 0 8rem;
+  position:relative;
+}
+
+.g-header{
+  padding:0 3rem;
+  margin-bottom:4rem;
+  display:flex;flex-direction:column;gap:.5rem;
+  position:relative;
+}
+.g-header-top{
+  display:flex;align-items:baseline;gap:1rem;
+}
+.g-eyebrow{font-size:.6rem;letter-spacing:.3em;color:var(--rust);text-transform:uppercase;}
+.g-title-main{
+  font-family:'Unbounded',sans-serif;font-weight:900;
+  font-size:clamp(2rem,5vw,4rem);
+  color:var(--cream);letter-spacing:-.02em;
+  transform:skewX(-3deg);display:inline-block;
+}
+.g-title-ghost{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(4rem,10vw,9rem);
+  color:transparent;-webkit-text-stroke:1px var(--dust);
+  position:absolute;right:3rem;top:-2rem;
+  letter-spacing:.1em;pointer-events:none;
+  transform:rotate(1.5deg);
+}
+
+/* The real chaos: absolutely positioned overlapping panels */
+.g-stage{
+  position:relative;
+  height:900px;
+  margin:0 2rem;
+}
+
+.gp{
+  position:absolute;
+  background:var(--dust);
+  overflow:hidden;
+  cursor:none;
+}
+/* Each panel — wildly different sizes, angles, positions */
+.gp:nth-child(1){
+  width:44%;height:55%;
+  top:2%;left:3%;
+  transform:rotate(-2.5deg);
+  z-index:3;
+}
+.gp:nth-child(2){
+  width:32%;height:42%;
+  top:5%;left:50%;
+  transform:rotate(3deg);
+  z-index:2;
+}
+.gp:nth-child(3){
+  width:22%;height:30%;
+  top:3%;right:1%;
+  transform:rotate(-1deg);
+  z-index:4;
+}
+.gp:nth-child(4){
+  width:35%;height:48%;
+  top:40%;left:1%;
+  transform:rotate(2deg) translateY(-20px);
+  z-index:2;
+}
+.gp:nth-child(5){
+  width:50%;height:55%;
+  top:38%;left:30%;
+  transform:rotate(-1.8deg);
+  z-index:3;
+}
+.gp:nth-child(6){
+  width:20%;height:28%;
+  top:42%;right:0%;
+  transform:rotate(4deg);
+  z-index:5;
+}
+
+.gp-inner{
+  position:absolute;inset:0;
+  transition:transform .6s cubic-bezier(.16,1,.3,1);
+}
+.gp:hover{z-index:100!important;}
+.gp:hover .gp-inner{transform:scale(1.04);}
+
+/* Muted textured placeholder fills */
+.gf1{background:radial-gradient(ellipse at 30% 40%,#2d2420 0%,#1a1210 100%);}
+.gf2{background:radial-gradient(ellipse at 70% 30%,#1e2018 0%,#111208 100%);}
+.gf3{background:radial-gradient(ellipse at 50% 60%,#221a14 0%,#140e0a 100%);}
+.gf4{background:radial-gradient(ellipse at 20% 70%,#1a1c24 0%,#0e1018 100%);}
+.gf5{background:radial-gradient(ellipse at 60% 40%,#201e18 0%,#12100c 100%);}
+.gf6{background:radial-gradient(ellipse at 40% 50%,#1c2220 0%,#0e1410 100%);}
+
+.gp-inner svg{position:absolute;inset:0;width:100%;height:100%;opacity:.18;}
+
+/* hover reveal */
+.gp-over{
+  position:absolute;inset:0;z-index:10;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:.8rem 1rem;
+  background:linear-gradient(to top,rgba(14,13,11,.95) 0%,transparent 50%);
+  opacity:0;transition:opacity .4s;
+}
+.gp:hover .gp-over{opacity:1;}
+.gp-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.4rem;letter-spacing:.08em;
+  color:var(--cream);line-height:1;
+}
+.gp-sub{font-size:.55rem;letter-spacing:.2em;color:var(--fog);margin-top:2px;}
+
+/* torn tape label at top corner */
+.gp-tape{
+  position:absolute;
+  top:-2px;left:12px;
+  background:var(--ochre);
+  padding:.15rem .5rem;
+  font-size:.5rem;letter-spacing:.2em;
+  color:rgba(0,0,0,.6);
+  text-transform:uppercase;
+  transform:rotate(-1deg);
+  z-index:11;
+  opacity:.7;
+}
+
+/* index number burnt into corner */
+.gp-num{
+  position:absolute;bottom:6px;right:8px;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:3rem;color:rgba(168,159,148,.06);
+  line-height:1;z-index:2;
+  transition:color .4s;
+}
+.gp:hover .gp-num{color:rgba(168,159,148,.2);}
+
+/* placeholder text */
+.gp-hint{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  font-size:.52rem;letter-spacing:.2em;
+  color:var(--ash);text-transform:uppercase;
+  text-align:center;z-index:2;
+  pointer-events:none;
+  border:1px dashed var(--ash);
+  padding:.5rem 1rem;
+  white-space:nowrap;
+}
+
+/* ══════════════════════
+   ABOUT
+══════════════════════ */
+#about{
+  background:var(--ink);
+  padding:8rem 3rem;
+  position:relative;overflow:hidden;
+}
+
+/* Big diagonal shape */
+#about::before{
+  content:'';position:absolute;
+  top:0;left:-10%;
+  width:50%;height:100%;
+  background:var(--paper);
+  clip-path:polygon(0 0,85% 0,100% 100%,0 100%);
+  pointer-events:none;
+}
+
+.about-wrap{
+  display:grid;
+  grid-template-columns:1fr 1.2fr;
+  gap:4rem;
+  position:relative;z-index:2;
+}
+
+.about-left{position:relative;}
+
+/* Stack of torn paper panels */
+.torn-stack{position:relative;padding-bottom:130%;}
+.torn-a,.torn-b,.torn-c{
+  position:absolute;inset:0;
+}
+.torn-a{
+  background:var(--dust);
+  clip-path:polygon(0 0,100% 2%,98% 97%,3% 100%);
+  transform:rotate(-5deg) translate(-8px,8px);
+}
+.torn-b{
+  background:var(--ash);
+  clip-path:polygon(2% 1%,99% 0,100% 98%,0 100%);
+  transform:rotate(-2deg) translate(-3px,3px);
+}
+.torn-c{
+  background:var(--paper);
+  clip-path:polygon(0 2%,98% 0,100% 99%,1% 100%);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.torn-c-inner{
+  width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:1rem;
+}
+.about-monogram{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:8rem;
+  color:transparent;
+  -webkit-text-stroke:1px var(--ash);
+  line-height:1;letter-spacing:.1em;
+}
+.about-subtitle{
+  font-size:.55rem;letter-spacing:.35em;
+  color:var(--fog);text-transform:uppercase;
+}
+
+/* Stamp */
+.about-stamp{
+  position:absolute;
+  bottom:-1rem;right:-1.5rem;
+  width:90px;height:90px;
+  border:2px solid var(--rust);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;
+  transform:rotate(12deg);
+  background:var(--ink);
+  z-index:10;
+}
+.stamp-line1{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:.9rem;letter-spacing:.1em;color:var(--rust);
+}
+.stamp-line2{
+  font-size:.38rem;letter-spacing:.25em;color:var(--rust-dim);
+  text-transform:uppercase;
+}
+
+.about-right{
+  padding-top:2rem;
+  display:flex;flex-direction:column;justify-content:center;
+}
+
+.about-section-tag{
+  font-size:.58rem;letter-spacing:.3em;color:var(--rust);
+  text-transform:uppercase;margin-bottom:1.5rem;
+  display:flex;align-items:center;gap:.75rem;
+}
+.about-section-tag::before{
+  content:'';display:block;
+  width:20px;height:1px;background:var(--rust);
+}
+
+.about-h{
+  font-family:'Unbounded',sans-serif;font-weight:900;
+  font-size:clamp(2.2rem,4vw,3.2rem);
+  line-height:1.05;letter-spacing:-.03em;
+  color:var(--cream);margin-bottom:.5rem;
+}
+.about-h-ghost{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(2.5rem,5vw,4rem);
+  color:transparent;-webkit-text-stroke:1px var(--ash);
+  letter-spacing:.05em;margin-bottom:2rem;
+  display:block;transform:translateX(2px);
+}
+
+.about-body{
+  font-size:.82rem;line-height:1.95;
+  color:var(--bone);margin-bottom:1.25rem;
+  font-family:'Share Tech Mono',monospace;
+  opacity:.7;
+}
+
+.about-divider{
+  width:100%;height:1px;
+  background:linear-gradient(90deg,var(--rust) 0%,var(--ash) 60%,transparent 100%);
+  margin:2rem 0;
+}
+
+.stat-row{
+  display:flex;gap:0;
+}
+.stat-cell{
+  flex:1;padding:1rem;
+  border-right:1px solid var(--ash);
+  position:relative;
+}
+.stat-cell:last-child{border-right:none;}
+.stat-cell::before{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:1px;
+  background:var(--ash);
+}
+.s-num{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2.5rem;color:var(--bone);line-height:1;
+}
+.s-unit{color:var(--rust);font-size:1.5rem;}
+.s-lbl{
+  font-size:.52rem;letter-spacing:.2em;
+  color:var(--fog);text-transform:uppercase;margin-top:.25rem;
+}
+
+/* ══════════════════════
+   SHOP — really weird layout
+══════════════════════ */
+#shop{
+  background:var(--paper);
+  padding:8rem 0 10rem;
+  position:relative;overflow:hidden;
+}
+#shop::after{
+  content:'WORKS';
+  position:absolute;bottom:-4rem;left:-1rem;
+  font-family:'Bebas Neue',sans-serif;font-size:26vw;
+  color:transparent;-webkit-text-stroke:1px var(--dust);
+  pointer-events:none;transform:rotate(-3deg);line-height:1;
+}
+
+.shop-header{
+  padding:0 3rem 4rem;
+  display:flex;align-items:flex-end;justify-content:space-between;
+}
+.shop-header-left{}
+.shop-tag-top{
+  font-size:.58rem;letter-spacing:.3em;
+  color:var(--rust);text-transform:uppercase;margin-bottom:.75rem;
+}
+.shop-big{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(4rem,9vw,8rem);
+  letter-spacing:.05em;color:var(--cream);line-height:.9;
+}
+.shop-big-ghost{
+  font-family:'Unbounded',sans-serif;font-weight:300;
+  font-size:clamp(1rem,2.5vw,2rem);
+  color:var(--fog);letter-spacing:-.02em;
+  display:block;margin-top:.5rem;
+}
+.shop-header-note{
+  font-size:.58rem;letter-spacing:.18em;
+  color:var(--fog);max-width:200px;line-height:1.8;
+  text-align:right;
+}
+
+/* Items as overlapping torn tickets */
+.shop-field{
+  position:relative;
+  min-height:600px;
+  margin:0 3rem;
+}
+
+.ticket{
+  position:absolute;
+  background:var(--dust);
+  border:1px solid var(--ash);
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:stretch;
+  cursor:none;
+  overflow:hidden;
+  transition:z-index 0s, transform .3s cubic-bezier(.16,1,.3,1),border-color .3s;
+  width:80%;
+}
+.ticket::before{
+  content:'';
+  position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--rust);
+  transform:scaleY(0);transform-origin:top;
+  transition:transform .4s ease;
+}
+.ticket:hover{border-color:var(--bone);z-index:20;}
+.ticket:hover::before{transform:scaleY(1);}
+
+.ticket:nth-child(1){top:0%;left:0%;transform:rotate(-2deg);z-index:4;}
+.ticket:nth-child(2){top:22%;left:8%;transform:rotate(1.5deg);z-index:3;}
+.ticket:nth-child(3){top:44%;left:3%;transform:rotate(-1deg);z-index:2;}
+.ticket:nth-child(4){top:66%;left:6%;transform:rotate(2.5deg);z-index:1;}
+.ticket:hover{transform:rotate(0deg) translateX(12px) translateY(-4px)!important;}
+
+.ticket-stub{
+  width:60px;
+  border-right:1px dashed var(--ash);
+  display:flex;align-items:center;justify-content:center;
+  background:var(--paper);
+  position:relative;
+}
+.ticket-stub::before,.ticket-stub::after{
+  content:'';position:absolute;
+  width:14px;height:14px;
+  border-radius:50%;
+  background:var(--ink);
+  left:-7px;
+}
+.ticket-stub::before{top:-7px;}
+.ticket-stub::after{bottom:-7px;}
+.ticket-num{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.8rem;color:var(--ash);letter-spacing:.05em;
+  writing-mode:vertical-rl;text-orientation:mixed;
+}
+
+.ticket-body{padding:1.5rem 2rem;}
+.ticket-cat{
+  font-size:.52rem;letter-spacing:.25em;
+  color:var(--rust);text-transform:uppercase;margin-bottom:.4rem;
+}
+.ticket-name{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2rem;letter-spacing:.06em;color:var(--cream);line-height:1;
+  margin-bottom:.4rem;
+}
+.ticket-desc{
+  font-size:.68rem;color:var(--fog);line-height:1.7;
+}
+
+.ticket-price-col{
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:1.5rem;
+  border-left:1px dashed var(--ash);
+  gap:.75rem;min-width:120px;
+}
+.ticket-price{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2.2rem;letter-spacing:.05em;color:var(--bone);
+}
+.ticket-btn{
+  font-family:'Share Tech Mono',monospace;
+  font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;
+  background:transparent;border:1px solid var(--ash);
+  color:var(--fog);padding:.4rem .8rem;cursor:none;
+  transition:all .2s;
+}
+.ticket-btn:hover{border-color:var(--rust);color:var(--cream);background:rgba(122,58,40,.1);}
+
+/* ══════════════════════
+   CONTACT
+══════════════════════ */
+#contact{
+  background:var(--ink);
+  padding:8rem 3rem 6rem;
+  position:relative;overflow:hidden;
+}
+
+/* diagonal ruled lines */
+#contact::before{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(
+    -67deg,
+    transparent 0px,
+    transparent 28px,
+    rgba(44,42,38,.3) 28px,
+    rgba(44,42,38,.3) 29px
+  );
+  pointer-events:none;
+}
+
+.contact-wrap{
+  display:grid;
+  grid-template-columns:1.2fr 1fr;
+  gap:6rem;
+  position:relative;z-index:2;
+}
+
+.contact-left{}
+.contact-big-label{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(4rem,10vw,9rem);
+  line-height:.88;letter-spacing:.02em;
+  color:var(--cream);
+  position:relative;
+}
+.contact-big-label .line1{
+  display:block;
+  color:transparent;-webkit-text-stroke:1px var(--ash);
+  transform:translateX(-6px) rotate(-.5deg);
+}
+.contact-big-label .line2{
+  display:block;
+  color:var(--cream);
+  transform:translateX(2rem);
+}
+.contact-big-label .line3{
+  display:block;
+  font-family:'Unbounded',sans-serif;font-weight:300;
+  font-size:.3em;color:var(--fog);
+  letter-spacing:.02em;
+  transform:translateX(4rem) translateY(1rem);
+}
+
+.contact-socials{margin-top:3rem;display:flex;flex-direction:column;gap:0;}
+.soc{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1rem 0;
+  border-bottom:1px solid var(--ash);
+  text-decoration:none;color:var(--bone);
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.5rem;letter-spacing:.1em;
+  position:relative;overflow:hidden;
+  transition:color .2s,padding-left .25s;
+}
+.soc::before{
+  content:'';position:absolute;
+  left:0;top:0;bottom:0;width:0;
+  background:rgba(122,58,40,.1);
+  transition:width .3s;
+}
+.soc:hover{color:var(--cream);padding-left:.5rem;}
+.soc:hover::before{width:100%;}
+.soc-arrow{font-size:.9rem;color:var(--fog);transition:transform .2s,color .2s;}
+.soc:hover .soc-arrow{transform:translate(4px,-3px);color:var(--rust);}
+
+/* Form — truly odd layout */
+.contact-form{
+  display:flex;flex-direction:column;gap:0;
+  border:1px solid var(--ash);
+  transform:rotate(.5deg);
+}
+.cf-row{
+  display:grid;grid-template-columns:1fr 1fr;
+  border-bottom:1px solid var(--ash);
+}
+.cf-row.full{grid-template-columns:1fr;}
+.cf-field{
+  position:relative;padding:1rem 1.25rem;
+  border-right:1px solid var(--ash);
+}
+.cf-row.full .cf-field{border-right:none;}
+.cf-field:last-child{border-right:none;}
+.cf-label{
+  font-size:.5rem;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--rust);display:block;margin-bottom:.4rem;
+}
+.cf-input,.cf-area{
+  width:100%;background:transparent;border:none;
+  color:var(--cream);font-family:'Share Tech Mono',monospace;
+  font-size:.82rem;letter-spacing:.04em;
+  padding:.75rem 0;outline:none;resize:none;
+  transition:border-color .2s;
+  caret-color:var(--rust);
+}
+.cf-input::placeholder,.cf-area::placeholder{color:var(--ash);}
+.cf-input:focus,.cf-area:focus{
+  border-color:var(--rust);
+  background:rgba(176, 72, 91, 0.06);
+}
+.cf-area{height:80px;padding-top:.25rem;}
+
+.cf-submit{
+  background:var(--rust);color:var(--ink);border:none;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.4rem;letter-spacing:.25em;
+  padding:1.25rem;cursor:none;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.25rem 1.75rem;
+  transition:background .25s;
+}
+.cf-submit:hover{background:var(--ochre);}
+.cf-submit span{transform:skewX(-6deg);display:inline-block;}
+.cf-submit-arrow{font-size:1rem;transform:skewX(0);}
+
+/* ══════════════════════
+   FOOTER
+══════════════════════ */
+footer{
+  background:var(--paper);
+  padding:2rem 3rem;
+  display:flex;align-items:center;justify-content:space-between;
+  border-top:1px solid var(--ash);
+  transform:skewY(-.6deg);
+  transform-origin:left;
+}
+.foot-logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.4rem;letter-spacing:.3em;color:var(--bone);
+}
+.foot-copy{font-size:.52rem;letter-spacing:.2em;color:var(--fog);text-transform:uppercase;}
+.foot-top{
+  font-size:.55rem;letter-spacing:.2em;color:var(--fog);
+  text-decoration:none;text-transform:uppercase;transition:color .2s;
+}
+.foot-top:hover{color:var(--rust);}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(30px) rotate(-.3deg);transition:opacity .9s ease,transform .9s ease;}
+.reveal.in{opacity:1;transform:translateY(0) rotate(0deg);}
+
+@media(max-width:768px){
+  nav{padding:1rem 1.5rem;}.nav-links{display:none;}
+  #hero .hero-main{padding:7rem 1.5rem 2rem;}
+  .hero-bottom{grid-template-columns:1fr;}
+  .hero-cell{border-right:none;border-bottom:1px solid var(--ash);}
+  .anno,.anno-arrow,.hero-dash{display:none;}
+  .g-stage{height:auto;display:flex;flex-direction:column;gap:1rem;}
+  .gp{position:relative;width:100%!important;height:auto!important;top:auto!important;left:auto!important;right:auto!important;transform:none!important;}
+  .g-thumb-mob{padding-bottom:65%;}
+  .about-wrap,.contact-wrap{grid-template-columns:1fr;gap:3rem;}
+  #about,#contact,#shop{padding:5rem 1.5rem;}
+  .shop-field{height:auto;display:flex;flex-direction:column;gap:1rem;}
+  .ticket{position:relative;top:auto!important;left:auto!important;width:100%!important;transform:none!important;}
+  footer{flex-direction:column;gap:.75rem;transform:skewY(-.2deg);}
+  .contact-form{transform:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="cur" id="cur"></div>
+<div class="cur-x" id="curx"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">QBZ</a>
+  <ul class="nav-links">
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#shop">Shop</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-main">
+    <div class="hero-t">
+      <span class="hero-t-q glitch-q">Q</span>
+      <span class="hero-t-b">B</span>
+      <span class="hero-t-z">Z</span>
+    </div>
+
+    <!-- floating annotation stickers -->
+    <div class="anno anno-1">Digital Illustrator</div>
+    <div class="anno anno-2">Est. 2022 · Lagos</div>
+    <div class="anno anno-3">↳ Commissions Open</div>
+    <span class="anno-arrow anno-arrow-1">⟶</span>
+    <span class="anno-arrow anno-arrow-2">⟶</span>
+
+    <div class="hero-dash hd1"></div>
+    <div class="hero-dash hd2"></div>
+    <div class="hero-dash hd3"></div>
+  </div>
+
+  <div class="hero-bottom">
+    <div class="hero-cell">
+      <div>
+        <div class="hero-cell-label">Discipline</div>
+        <div class="hero-cell-val">Illustration</div>
+      </div>
+    </div>
+    <div class="hero-cell">
+      <div>
+        <div class="hero-cell-label">Available For</div>
+        <div class="hero-cell-val">Commissions</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- DIAGONAL TICKER 1 -->
+
+  <div class="diag-ticker">
+    <span class="diag-ticker-item">Character Design</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">Commissions Open</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">Original Art</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">QBZ</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">Digital Illustration</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">Character Design</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">Commissions Open</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">Original Art</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">QBZ</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">Digital Illustration</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">Character Design</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">Commissions Open</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">Original Art</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">QBZ</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">Digital Illustration</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">Character Design</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">Commissions Open</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">Original Art</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">QBZ</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">Digital Illustration</span><span class="diag-ticker-sep"></span>
+  </div>
+</div>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="g-header reveal">
+    <div class="g-header-top">
+      <span class="g-eyebrow">01 //</span>
+      <h2 class="g-title-main">Selected Works</h2>
+    </div>
+    <div class="g-title-ghost">GALLERY</div>
+  </div>
+
+  <div class="g-stage">
+
+    <div class="gp reveal">
+      <div class="gp-inner">
+        <img src="img1.jpg"  loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;" alt="Phantom">
+      </div>
+      <div class="gp-over"><div class="gp-title">Phantom</div><div class="gp-sub"></div></div>
+      <div class="gp-num">01</div>
+    </div>
+
+    <div class="gp reveal">
+      <div class="gp-inner">
+        <img src="img2.jpg"  loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;image-rendering:crisp-edges;" alt="makoto">
+      </div>
+      <div class="gp-over"><div class="gp-title">makoto</div><div class="gp-sub"></div></div>
+      <div class="gp-num">02</div>
+    </div>
+
+    <div class="gp reveal">
+      <div class="gp-inner">
+        <img src="img3.jpg"  loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;image-rendering:crisp-edges;" alt="sol">
+      </div>
+      <div class="gp-over"><div class="gp-title">sol badguy</div><div class="gp-sub"></div></div>
+      <div class="gp-num">03</div>
+    </div>
+
+    <div class="gp reveal">
+      <div class="gp-inner">
+        <img src="img4.jpg"  loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;image-rendering:crisp-edges;" alt="kat">
+      </div>
+      <div class="gp-over"><div class="gp-title">katarina</div><div class="gp-sub"></div></div>
+      <div class="gp-num">04</div>
+    </div>
+
+    <div class="gp reveal">
+      <div class="gp-inner">
+        <img src="img5.jpg"  loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;image-rendering:crisp-edges;" alt="ziwe">
+      </div>
+      <div class="gp-over"><div class="gp-title">ziwe</div><div class="gp-sub"></div></div>
+      <div class="gp-num">05</div>
+    </div>
+
+    <div class="gp reveal">
+      <div class="gp-inner">
+        <img src="img6.jpg"  loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;image-rendering:crisp-edges;" alt="tani">
+      </div>
+      <div class="gp-over"><div class="gp-title">tani</div><div class="gp-sub"></div></div>
+      <div class="gp-num">06</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-wrap">
+
+    <div class="about-right reveal" style="grid-column:1/-1;max-width:680px;">
+      <div class="about-section-tag">02 // About</div>
+      <h2 class="about-h">Born in ink.<br>Raised by chaos.</h2>
+      <span class="about-h-ghost">Illustrator.</span>
+      <p class="about-body">QBZ is a digital illustrator with a taste for the uncomfortable and the cinematic. Characters that breathe, environments that suffocate, concepts that linger.</p>
+      <p class="about-body">Influenced by anime, urban mythology, and the strange quiet between things. Every piece is a refusal to be ordinary.</p>
+      <div class="about-divider"></div>
+      <div class="stat-row">
+        <div class="stat-cell">
+          <div class="s-num">50<span class="s-unit">+</span></div>
+          <div class="s-lbl">Original Works</div>
+        </div>
+        <div class="stat-cell">
+          <div class="s-num">3<span class="s-unit">yr</span></div>
+          <div class="s-lbl">Active</div>
+        </div>
+        <div class="stat-cell">
+          <div class="s-num">∞</div>
+          <div class="s-lbl">Ideas Remaining</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SHOP -->
+<section id="shop">
+  <div class="shop-header reveal">
+    <div class="shop-header-left">
+      <div class="shop-tag-top">03 // Shop & Commissions</div>
+      <div class="shop-big">
+        Work for Hire.
+        <span class="shop-big-ghost">What do you need?</span>
+      </div>
+    </div>
+    <div class="shop-header-note">
+      All commissions are handled directly. No platforms. Just us.
+    </div>
+  </div>
+
+  <div class="shop-field">
+
+    <div class="ticket reveal">
+      <div class="ticket-stub"><div class="ticket-num">01</div></div>
+      <div class="ticket-body">
+        <div class="ticket-cat">// Print · Limited</div>
+        <div class="ticket-name">Signed Art Print</div>
+        <div class="ticket-desc">A4 · high-res · personally signed · shipped worldwide</div>
+      </div>
+      <div class="ticket-price-col">
+        <div class="ticket-price">$35</div>
+        <button class="ticket-btn" onclick="lenis.scrollTo(document.querySelector('#contact'),{offset:-70,duration:1.8})">Order</button>
+      </div>
+    </div>
+
+    <div class="ticket reveal">
+      <div class="ticket-stub"><div class="ticket-num">02</div></div>
+      <div class="ticket-body">
+        <div class="ticket-cat">// Commission · Personal</div>
+        <div class="ticket-name">Custom Character</div>
+        <div class="ticket-desc">Your concept · full illustration · personal use licence</div>
+      </div>
+      <div class="ticket-price-col">
+        <div class="ticket-price">$120</div>
+        <button class="ticket-btn" onclick="lenis.scrollTo(document.querySelector('#contact'),{offset:-70,duration:1.8})">Order</button>
+      </div>
+    </div>
+
+    <div class="ticket reveal">
+      <div class="ticket-stub"><div class="ticket-num">03</div></div>
+      <div class="ticket-body">
+        <div class="ticket-cat">// Commission · Scene</div>
+        <div class="ticket-name">Full Scene</div>
+        <div class="ticket-desc">Characters + environment · full composition · commercial rights available</div>
+      </div>
+      <div class="ticket-price-col">
+        <div class="ticket-price">$250</div>
+        <button class="ticket-btn" onclick="lenis.scrollTo(document.querySelector('#contact'),{offset:-70,duration:1.8})">Order</button>
+      </div>
+    </div>
+
+    <div class="ticket reveal">
+      <div class="ticket-stub"><div class="ticket-num">04</div></div>
+      <div class="ticket-body">
+        <div class="ticket-cat">// Commission · Bespoke</div>
+        <div class="ticket-name">Let's Figure It Out</div>
+        <div class="ticket-desc">Bigger project? Weird idea? Hit me — no brief is too strange</div>
+      </div>
+      <div class="ticket-price-col">
+        <div class="ticket-price">TBD</div>
+        <button class="ticket-btn" onclick="lenis.scrollTo(document.querySelector('#contact'),{offset:-70,duration:1.8})">Talk</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- DIAGONAL TICKER 2 — reversed, muted -->
+<div class="diag-ticker-wrap reverse" aria-hidden="true">
+  <div class="diag-ticker">
+    <span class="diag-ticker-item">Portraits</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">Environments</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">Conceptual Art</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">Characters</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">Scene Work</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">Portraits</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">Environments</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">Conceptual Art</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">Characters</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">Scene Work</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">Portraits</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">Environments</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">Conceptual Art</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">Characters</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">Scene Work</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">Portraits</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">Environments</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">Conceptual Art</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">Characters</span><span class="diag-ticker-sep"></span>
+    <span class="diag-ticker-item">Scene Work</span><span class="diag-ticker-sep"></span>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-wrap">
+
+    <div class="contact-left reveal">
+      <h2 class="contact-big-label">
+        <span class="line1">Say</span>
+        <span class="line2">Something.</span>
+        <span class="line3">I don't bite. Usually.</span>
+      </h2>
+      <div class="contact-socials">
+        <a href="https://www.instagram.com/notqbz?igsh=MWk0czcwZG9vNWc0MQ%3D%3D&utm_source=qr" class="soc">Instagram <span class="soc-arrow">↗</span></a>
+        <a href="https://x.com/actuallyqbz?s=21" class="soc">Twitter / X <span class="soc-arrow">↗</span></a>
+        <a href="https://www.tiktok.com/@definitelyqbz?_r=1&_t=ZS-95fRwFR7pNV" class="soc">TikTok <span class="soc-arrow">↗</span></a>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <form class="contact-form" action="https://formspree.io/f/mzdygona" method="POST">
+        <div class="cf-row">
+          <div class="cf-field">
+            <label class="cf-label">Name</label>
+            <input type="text" class="cf-input" name="name" placeholder="your name">
+          </div>
+          <div class="cf-field">
+            <label class="cf-label">Email</label>
+            <input type="email" class="cf-input" name="email" placeholder="your@email.com">
+          </div>
+        </div>
+        <div class="cf-row full" style="border-bottom:1px solid var(--ash)">
+          <div class="cf-field">
+            <label class="cf-label">Subject</label>
+            <input type="text" class="cf-input" name="subject" placeholder="commission / collab / other">
+          </div>
+        </div>
+        <div class="cf-row full" style="border-bottom:1px solid var(--ash)">
+          <div class="cf-field">
+            <label class="cf-label">Message</label>
+            <textarea class="cf-area" name="message" placeholder="tell me everything. the weirder the better."></textarea>
+          </div>
+        </div>
+        <button type="submit" class="cf-submit">
+          <span>Send It</span>
+          <span class="cf-submit-arrow">→</span>
+        </button>
+      </form>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="foot-logo">QBZ</span>
+  <span class="foot-copy">© 2025 · All rights reserved</span>
+  <a href="#hero" class="foot-top">↑ Top</a>
+</footer>
+
+<script>
+// CURSOR — crosshair style
+const cur=document.getElementById('cur'),cx=document.getElementById('curx');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cur.style.left=mx+'px';cur.style.top=my+'px';
+});
+(function ar(){
+  rx+=(mx-rx)*.09;ry+=(my-ry)*.09;
+  cx.style.left=rx+'px';cx.style.top=ry+'px';
+  requestAnimationFrame(ar);
+})();
+document.querySelectorAll('a,button,.gp,.ticket,.hero-cell').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{
+    cur.style.transform='translate(-50%,-50%) scale(3)';
+    cx.style.transform='translate(-50%,-50%) scale(1.5) rotate(45deg)';
+    cur.style.background='var(--rust)';
+  });
+  el.addEventListener('mouseleave',()=>{
+    cur.style.transform='translate(-50%,-50%) scale(1)';
+    cx.style.transform='translate(-50%,-50%) scale(1) rotate(0deg)';
+    cur.style.background='var(--cream)';
+  });
+});
+
+// REVEAL
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting){
+      setTimeout(()=>e.target.classList.add('in'),i*70);
+      obs.unobserve(e.target);
+    }
+  });
+},{threshold:.06});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// Subtle parallax on hero letters
+const tq=document.querySelector('.hero-t-q');
+const tb=document.querySelector('.hero-t-b');
+const tz=document.querySelector('.hero-t-z');
+window.addEventListener('scroll',()=>{
+  const s=window.scrollY;
+  if(tq)tq.style.transform=`translateX(${-6+s*.04}px) rotate(${-.8+s*.001}deg)`;
+  if(tb)tb.style.transform=`translateX(${48-s*.03}px) rotate(${.4-s*.0005}deg)`;
+  if(tz)tz.style.transform=`translateX(${-32+s*.05}px) rotate(${-1.2+s*.0015}deg)`;
+});
+</script>
+
+<!-- LENIS -->
+<script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+<script>
+const lenis=new Lenis({duration:1.6,easing:t=>Math.min(1,1.001-Math.pow(2,-10*t)),smoothWheel:true,wheelMultiplier:.85});
+(function raf(t){lenis.raf(t);requestAnimationFrame(raf);})(0);
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    e.preventDefault();
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t)lenis.scrollTo(t,{offset:-70,duration:1.8});
+  });
+});
+</script>
+</body>
+</html>
